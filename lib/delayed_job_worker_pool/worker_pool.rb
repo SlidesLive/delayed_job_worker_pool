@@ -146,7 +146,7 @@ module DelayedJobWorkerPool
     end
 
     def worker_name(worker_pid)
-      "host:#{Socket.gethostname} pid:#{worker_pid}"
+      "#{options[:worker_name_prefix]}host:#{Socket.gethostname} pid:#{worker_pid}"
     end
 
     def num_workers
@@ -158,7 +158,7 @@ module DelayedJobWorkerPool
     end
 
     def worker_options(worker_pid)
-      options.except(:workers, :preload_app, *DelayedJobWorkerPool::DSL::CALLBACK_SETTINGS).merge(name: worker_name(worker_pid))
+      options.except(:workers, :preload_app, :worker_name_prefix, *DelayedJobWorkerPool::DSL::CALLBACK_SETTINGS).merge(name: worker_name(worker_pid))
     end
 
     def create_pipe(inheritable: true)
